@@ -19,6 +19,10 @@ static int one_major = -1;
 static struct class* one_class = NULL;
 static struct device* one_device = NULL;
 
+static unsigned short output_value = 0xFF;
+module_param_named(outval, output_value, ushort, S_IRUGO);
+MODULE_PARM_DESC(outval, "Overrides the default output value (0xFF).");
+
 
 struct file_operations one_fops = {
     .owner = THIS_MODULE,
@@ -102,7 +106,7 @@ static void one_destroy(void)
 
 ssize_t one_file_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
 {
-    memset(buf, 0xFF, count);
+    memset(buf, (unsigned char)output_value, count);
 
     return count;
 }
