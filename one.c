@@ -12,6 +12,7 @@
 
 /* Prototypes */
 static void one_destroy(void);
+ssize_t one_file_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos);
 
 /* Device variables */
 static int one_major = -1;
@@ -23,7 +24,7 @@ struct file_operations one_fops = {
     .owner = THIS_MODULE,
     .open = NULL,
     .release = NULL,
-    .read = NULL,
+    .read = one_file_read,
     .write = NULL,
     .llseek = NULL,
     .mmap = NULL,
@@ -97,6 +98,15 @@ static void one_destroy(void)
 
     if (one_major > 0) unregister_chrdev(one_major, DEVICE_NAME);
 }
+
+
+ssize_t one_file_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+{
+    memset(buf, 0xFF, count);
+
+    return count;
+}
+
 
 
 module_init(one_init);
