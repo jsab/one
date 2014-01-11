@@ -115,7 +115,15 @@ ssize_t one_file_read(struct file *filp, char __user *buf, size_t count, loff_t 
 
 ssize_t one_file_write(struct file *filp, const char __user * buf, size_t count, loff_t *f_pos)
 {
-    printk(KERN_INFO "Writing!\n");
+    int ret = 0;
+    long value = -1;
+
+    ret = kstrtol_from_user(buf, count, 10, &value);
+
+    if (ret == 0)
+    {
+        output_value = (unsigned short)value + 1;
+    }
 
     return count;
 }
