@@ -13,6 +13,8 @@
 /* Prototypes */
 static void one_destroy(void);
 ssize_t one_file_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos);
+ssize_t one_file_write(struct file *filp, const char __user * buf, size_t count, loff_t *f_pos);
+
 
 /* Device variables */
 static int one_major = -1;
@@ -29,7 +31,7 @@ struct file_operations one_fops = {
     .open = NULL,
     .release = NULL,
     .read = one_file_read,
-    .write = NULL,
+    .write = one_file_write,
     .llseek = NULL,
     .mmap = NULL,
 };
@@ -111,6 +113,12 @@ ssize_t one_file_read(struct file *filp, char __user *buf, size_t count, loff_t 
     return count;
 }
 
+ssize_t one_file_write(struct file *filp, const char __user * buf, size_t count, loff_t *f_pos)
+{
+    printk(KERN_INFO "Writing!\n");
+
+    return count;
+}
 
 
 module_init(one_init);
